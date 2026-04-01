@@ -8,6 +8,15 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="パパ力診断" />
   <title>パパ力診断</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X9JEQ97CNE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-X9JEQ97CNE');
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -26,10 +35,32 @@
         <div class="stat-chip">📊 5項目評価</div>
         <div class="stat-chip">🏆 S〜Dランク</div>
       </div>
+      <!-- ========================================
+           【検証用】パターン選択UI
+           正式運用時はこのブロックを削除し、
+           下の通常スタートボタンのコメントアウトを外す
+      ======================================== -->
+      <div class="pattern-select-wrap">
+        <p class="pattern-select-label">🔬 検証モード：パターンを選んでスタート</p>
+        <div class="pattern-btn-row">
+          <button class="btn-pattern" onclick="startQuiz('A')">
+            <span class="pattern-badge">A</span>
+            パターンA
+            <span class="btn-arrow">→</span>
+          </button>
+          <button class="btn-pattern btn-pattern-b" onclick="startQuiz('B')">
+            <span class="pattern-badge">B</span>
+            パターンB
+            <span class="btn-arrow">→</span>
+          </button>
+        </div>
+      </div>
+      <!-- 正式運用時はこちらを使用
       <button class="btn-start" onclick="startQuiz()">
         診断スタート！
         <span class="btn-arrow">→</span>
       </button>
+      -->
       <p class="top-note">※ 所要時間：約2分</p>
     </div>
   </div>

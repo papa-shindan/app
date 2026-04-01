@@ -181,6 +181,68 @@ button {
   color: #AAA;
 }
 
+/* 【検証用】パターン選択UI（正式運用時は削除） */
+.pattern-select-wrap {
+  margin-bottom: 14px;
+}
+.pattern-select-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-light);
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  background: #F0EBF8;
+  border-radius: 100px;
+  border: 1.5px dashed var(--purple);
+  color: var(--purple);
+}
+.pattern-btn-row {
+  display: flex;
+  gap: 10px;
+}
+.btn-pattern {
+  flex: 1;
+  padding: 16px 12px;
+  background: var(--orange);
+  color: white;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: 0 5px 0 #c84e1e, 0 8px 20px rgba(255,107,53,0.30);
+  transition: transform 0.1s, box-shadow 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-pattern:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #c84e1e;
+}
+.btn-pattern-b {
+  background: var(--blue);
+  box-shadow: 0 5px 0 #2a5a7a, 0 8px 20px rgba(61,126,170,0.30);
+}
+.btn-pattern-b:active {
+  box-shadow: 0 2px 0 #2a5a7a;
+}
+.pattern-badge {
+  width: 26px;
+  height: 26px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
 /* ============================================
    画面②：質問
    ============================================ */
@@ -787,4 +849,3 @@ button {
   .quiz-wrap,
   .result-wrap { padding-top: 20px; }
 }
-

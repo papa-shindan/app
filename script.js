@@ -30,7 +30,7 @@ const STATUS_CONFIG = {
  * 質問リスト（15問）
  * 選択肢は問によって4択・5択混在
  */
-const QUESTIONS = [
+const QUESTIONS_A = [
   // 問1
   {
     icon: "🌙",
@@ -201,16 +201,204 @@ const QUESTIONS = [
   },
 ];
 
+// ============================================
+// 【検証用】パターンB 質問リスト・ステータス・ランク定義
+// ※ 正式運用時はこのブロックごと削除
+// ============================================
+
+const STATUS_CONFIG_B = {
+  care:    { label: "ケア力",     line1: "ケア力",     icon: "🍼", color: "#3D7EAA" },
+  kizuna:  { label: "きずな力",   line1: "きずな力",   icon: "🤝", color: "#E91E8C" },
+  team:    { label: "チーム力",   line1: "チーム力",   icon: "🏠", color: "#27AE60" },
+  asobi:   { label: "あそび力",   line1: "あそび力",   icon: "🎮", color: "#FF6B35" },
+  growth:  { label: "パパ成長力", line1: "パパ成長力", icon: "🌱", color: "#7B5EA7" },
+};
+
+const RANKS_B = [
+  { rank: "S", cssClass: "rank-s", name: "レジェンドパパ 👑",      minScore: 83 },
+  { rank: "A", cssClass: "rank-a", name: "頼れるパパ 🌟",           minScore: 65 },
+  { rank: "B", cssClass: "rank-b", name: "ふつうに頼れるパパ 🌱",   minScore: 38 },
+  { rank: "C", cssClass: "rank-c", name: "これから伸びるパパ 💪",   minScore: 21 },
+  { rank: "D", cssClass: "rank-d", name: "パパ覚醒前夜 🌙",         minScore: 0  },
+];
+
+const QUESTIONS_B = [
+  // Q1
+  {
+    icon: "🍼",
+    text: "子どもが泣いたり、ぐずったりしたとき、最初に動くのは？",
+    choices: [
+      { text: "自分から率先して対応する",              scores: { care:4, kizuna:2 } },
+      { text: "パートナーと同時に動く",                scores: { care:3, team:2 } },
+      { text: "パートナーが動くのを見てから手伝う",    scores: { care:2 } },
+      { text: "基本的にパートナーに任せている",        scores: {} },
+    ],
+  },
+  // Q2
+  {
+    icon: "👶",
+    text: "おむつ替え・着替え・食事の補助など、毎日のお世話をどれくらいしている？",
+    choices: [
+      { text: "自分も主体的に担っている（週5日以上）", scores: { care:4, team:2 } },
+      { text: "週3〜4日程度はやっている",              scores: { care:3, team:1 } },
+      { text: "週1〜2日程度、たまにやる",              scores: { care:2 } },
+      { text: "ほとんどパートナーに任せている",        scores: {} },
+    ],
+  },
+  // Q3
+  {
+    icon: "🚨",
+    text: "子どもが体調を崩したとき、仕事を調整して対応したことがある？",
+    choices: [
+      { text: "積極的に調整して対応している",          scores: { care:4, team:3 } },
+      { text: "状況によっては対応している",            scores: { care:3, team:2 } },
+      { text: "なかなか難しいが、気持ちはある",        scores: { care:1 } },
+      { text: "仕事優先でほぼ対応できていない",        scores: {} },
+    ],
+  },
+  // Q4
+  {
+    icon: "👨‍👧",
+    text: "子どもと1対1で過ごす時間（パートナー抜きで）は週にどれくらい？",
+    choices: [
+      { text: "週3時間以上",     scores: { kizuna:4, asobi:2 } },
+      { text: "週1〜2時間程度", scores: { kizuna:3, asobi:1 } },
+      { text: "月数回程度",      scores: { kizuna:2 } },
+      { text: "ほとんどない",    scores: {} },
+    ],
+  },
+  // Q5
+  {
+    icon: "😢",
+    text: "子どもが失敗したり泣いているとき、どう接する？",
+    choices: [
+      { text: "まず気持ちに寄り添い、「大丈夫だよ」と共感する",    scores: { kizuna:4, care:2 } },
+      { text: "なぐさめつつ、原因を聞いてあげる",                  scores: { kizuna:3, care:1 } },
+      { text: "「次はうまくやろう」と前向きな言葉をかける",        scores: { kizuna:2 } },
+      { text: "「泣かない！」「しっかりしなさい」と言ってしまいがち", scores: {} },
+    ],
+  },
+  // Q6
+  {
+    icon: "👀",
+    text: "子どもと最後に「ちゃんと目を見て話した」のはいつ？",
+    choices: [
+      { text: "今日・昨日",             scores: { kizuna:4, growth:2 } },
+      { text: "2〜3日前",              scores: { kizuna:3, growth:1 } },
+      { text: "1週間以内",              scores: { kizuna:1 } },
+      { text: "最近あまり記憶がない",   scores: {} },
+    ],
+  },
+  // Q7
+  {
+    icon: "🏠",
+    text: "家事（料理・洗濯・掃除など）の分担は？",
+    choices: [
+      { text: "ほぼ半々か、自分の方が多いくらい",  scores: { team:4, care:1 } },
+      { text: "3〜4割は自分が担っている",          scores: { team:3 } },
+      { text: "1〜2割程度、言われたらやる",        scores: { team:1 } },
+      { text: "ほぼパートナー任せ",                scores: {} },
+    ],
+  },
+  // Q8
+  {
+    icon: "💬",
+    text: "パートナーが「疲れた」「しんどい」と言ったとき、どう反応する？",
+    choices: [
+      { text: "「任せて、休んで」と家事・育児を引き受ける",  scores: { team:4, kizuna:2 } },
+      { text: "「何か手伝おうか？」と聞く",                  scores: { team:3, kizuna:1 } },
+      { text: "「お互い大変だよね」と共感する",              scores: { kizuna:2, team:1 } },
+      { text: "「自分も疲れてる」と返してしまいがち",        scores: {} },
+    ],
+  },
+  // Q9
+  {
+    icon: "📖",
+    text: "育児に関する情報収集（発達・教育・病気など）をしている？",
+    choices: [
+      { text: "自分から積極的に調べている",              scores: { growth:4, team:2 } },
+      { text: "パートナーから共有されたら一緒に考える",  scores: { team:3, growth:2 } },
+      { text: "パートナーが主で、聞かれたら答える",      scores: { team:1, growth:1 } },
+      { text: "ほぼ把握していない",                      scores: {} },
+    ],
+  },
+  // Q10
+  {
+    icon: "🎠",
+    text: "子どもの好きなもの（キャラクター・遊び・食べ物など）をいくつ言える？",
+    choices: [
+      { text: "5つ以上すぐ言える",      scores: { asobi:4, kizuna:3 } },
+      { text: "3〜4つ言える",          scores: { asobi:3, kizuna:2 } },
+      { text: "1〜2つなら言える",       scores: { asobi:1, kizuna:1 } },
+      { text: "正直あまりわからない",   scores: {} },
+    ],
+  },
+  // Q11
+  {
+    icon: "🌳",
+    text: "子どもと一緒に外遊び・お出かけをどれくらいしている？",
+    choices: [
+      { text: "週2回以上",      scores: { asobi:4, care:1 } },
+      { text: "週1回程度",      scores: { asobi:3 } },
+      { text: "月2〜3回程度",  scores: { asobi:2 } },
+      { text: "月1回以下",      scores: {} },
+    ],
+  },
+  // Q12
+  {
+    icon: "🔍",
+    text: "子どもの「なんで？」「どうして？」に、どう答える？",
+    choices: [
+      { text: "一緒に考えたり、調べたりする",    scores: { asobi:4, growth:2 } },
+      { text: "できる範囲で丁寧に答える",        scores: { asobi:3, growth:1 } },
+      { text: "「あとでね」が多い",              scores: { asobi:1 } },
+      { text: "「知らない」「うるさい」と言ってしまいがち", scores: {} },
+    ],
+  },
+  // Q13
+  {
+    icon: "📚",
+    text: "「良いパパになりたい」と思って、何か行動したことがある？",
+    choices: [
+      { text: "本を読む・SNSで情報収集・パパ友と話すなど積極的にしている", scores: { growth:4, team:1 } },
+      { text: "たまに記事を読んだり考えたりしている",                        scores: { growth:3 } },
+      { text: "思うことはあるが、特に行動はしていない",                      scores: { growth:1 } },
+      { text: "あまり考えたことがない",                                      scores: {} },
+    ],
+  },
+  // Q14
+  {
+    icon: "💛",
+    text: "子どもに「ありがとう」「大好き」を言葉にして伝えているか？",
+    choices: [
+      { text: "自然に毎日伝えている",        scores: { kizuna:4, growth:2 } },
+      { text: "意識すれば言える",            scores: { kizuna:3, growth:1 } },
+      { text: "照れくさくてあまり言えない",  scores: { kizuna:1 } },
+      { text: "ほとんど言ったことがない",    scores: {} },
+    ],
+  },
+  // Q15
+  {
+    icon: "🔮",
+    text: "10年後の子どもに「パパのここが好きだった」と言ってもらいたいのは？",
+    choices: [
+      { text: "「一緒に遊んでくれたこと」→ 実際によく遊んでいる",      scores: { asobi:4, growth:3 } },
+      { text: "「話を聞いてくれたこと」→ 意識してはいる",              scores: { kizuna:3, growth:3 } },
+      { text: "「頑張って働いてくれたこと」→ それが精一杯",            scores: { growth:1 } },
+      { text: "子どもが何を思うか、あまり想像したことがない",          scores: {} },
+    ],
+  },
+];
+
 /**
  * 総合スコアによるランク定義（6段階：S / A+ / A / B / C / D）
  */
 const RANKS = [
-  { rank: "S",  cssClass: "rank-s",  name: "レジェンドパパ 👑",        minScore: 90 },
-  { rank: "A+", cssClass: "rank-ap", name: "スーパーパパ ⭐⭐",          minScore: 80 },
-  { rank: "A",  cssClass: "rank-a",  name: "頼れるパパ 🌟",             minScore: 62 },
-  { rank: "B",  cssClass: "rank-b",  name: "ふつうに頼れるパパ 🌱",     minScore: 42 },
-  { rank: "C",  cssClass: "rank-c",  name: "これから伸びるパパ 💪",     minScore: 20 },
-  { rank: "D",  cssClass: "rank-d",  name: "パパ覚醒前夜 🌙",           minScore: 0  },
+  { rank: "S", cssClass: "rank-s", name: "レジェンドパパ 👑",        minScore: 80 },
+  { rank: "A", cssClass: "rank-a", name: "頼れるパパ 🌟",             minScore: 62 },
+  { rank: "B", cssClass: "rank-b", name: "ふつうに頼れるパパ 🌱",     minScore: 42 },
+  { rank: "C", cssClass: "rank-c", name: "これから伸びるパパ 💪",     minScore: 20 },
+  { rank: "D", cssClass: "rank-d", name: "パパ覚醒前夜 🌙",           minScore: 0  },
 ];
 
 /**
@@ -430,10 +618,9 @@ function pickSkills(scores, total) {
   // 総合スコアに応じてレアリティプールを決定
   let rarityPool;
   if      (total >= 80) rarityPool = ["SSR","SSR","SR"];   // Sランク相当
-  else if (total >= 75) rarityPool = ["SSR","SSR","SR"];   // A+ランク相当
-  else if (total >= 50) rarityPool = ["SSR","SR","SR"];    // Aランク相当
-  else if (total >= 32) rarityPool = ["SR","SR","R"];      // Bランク相当
-  else if (total >= 14) rarityPool = ["R","R","N"];        // Cランク相当
+  else if (total >= 62) rarityPool = ["SSR","SR","SR"];    // Aランク相当
+  else if (total >= 42) rarityPool = ["SR","SR","R"];      // Bランク相当
+  else if (total >= 20) rarityPool = ["R","R","N"];        // Cランク相当
   else                  rarityPool = ["N","N","N"];        // Dランク相当
 
   // 上位3ステータスを特定
@@ -470,13 +657,6 @@ const COMMENTS = {
       "完璧すぎて、たまに怖い。",
       "このパパがいれば、何も怖くない。",
       "頼りすぎてごめん。でも頼りたくなる。",
-    ],
-  },
-  "A+": {
-    wife: [
-      "もうちょっとで伝説になれる。",
-      "ほぼ満点。あとは続けるだけ。",
-      "このパパ、隠れた逸材だと思う。",
     ],
   },
   A: {
@@ -517,6 +697,8 @@ const COMMENTS = {
 let currentQuestion = 0;
 let scores = {};
 let answerHistory = []; // 戻るボタン用：各問の選択スコアを記録
+let currentQuestions = QUESTIONS_A; // 使用中の質問セット
+let currentPattern = 'A';           // 使用中のパターン
 
 
 // ============================================
@@ -534,18 +716,23 @@ function showScreen(id) {
 // 4. クイズ進行関数
 // ============================================
 
-function startQuiz() {
+function startQuiz(pattern) {
+  // 【検証用】パターン切り替え（正式運用時はこの分岐を削除し固定）
+  currentPattern   = pattern || 'A';
+  currentQuestions = (currentPattern === 'B') ? QUESTIONS_B : QUESTIONS_A;
+
   currentQuestion = 0;
   answerHistory = [];
   scores = {};
-  Object.keys(STATUS_CONFIG).forEach(key => { scores[key] = 0; });
+  const config = (currentPattern === 'B') ? STATUS_CONFIG_B : STATUS_CONFIG;
+  Object.keys(config).forEach(key => { scores[key] = 0; });
   showScreen("screen-quiz");
   renderQuestion();
 }
 
 function renderQuestion() {
-  const q = QUESTIONS[currentQuestion];
-  const total = QUESTIONS.length;
+  const q = currentQuestions[currentQuestion];
+  const total = currentQuestions.length;
   const remain = total - currentQuestion;
 
   // 問番号・残り問数
@@ -602,7 +789,7 @@ function selectChoice(btn, selectedScores) {
 
   currentQuestion++;
 
-  if (currentQuestion < QUESTIONS.length) {
+  if (currentQuestion < currentQuestions.length) {
     setTimeout(renderQuestion, 280);
   } else {
     // ローディング画面を表示してから集計
@@ -638,11 +825,15 @@ function goBack() {
  * 結果画面を組み立てて表示する
  */
 function showResult() {
+  // ── パターンに応じた設定を選択 ──────
+  const activeStatusConfig = (currentPattern === 'B') ? STATUS_CONFIG_B : STATUS_CONFIG;
+  const activeRanks        = (currentPattern === 'B') ? RANKS_B : RANKS;
+
   // ── 総合スコア計算 ──────────────────
   const totalScore = Object.values(scores).reduce((sum, v) => sum + v, 0);
 
   // ── ランク判定 ──────────────────────
-  const rankData = RANKS.find(r => totalScore >= r.minScore);
+  const rankData = activeRanks.find(r => totalScore >= r.minScore);
 
   // ランクバッジを更新
   const badge = document.getElementById("rank-badge");
@@ -654,7 +845,7 @@ function showResult() {
   const statusList = document.getElementById("status-list");
   statusList.innerHTML = "";
 
-  // スコア → ランク変換（15問スケール）
+  // スコア → ランク変換
   function scoreToRank(val) {
     if (val >= 14) return { rank: "S", cssClass: "sr-s" };
     if (val >= 10) return { rank: "A", cssClass: "sr-a" };
@@ -663,7 +854,7 @@ function showResult() {
     return           { rank: "D", cssClass: "sr-d" };
   }
 
-  Object.entries(STATUS_CONFIG).forEach(([key, config]) => {
+  Object.entries(activeStatusConfig).forEach(([key, config]) => {
     const val      = scores[key] || 0;
     const rankInfo = scoreToRank(val);
 
