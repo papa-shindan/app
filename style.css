@@ -218,6 +218,9 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .btn-pattern:active {
   transform: translateY(3px);
