@@ -9,6 +9,22 @@
   <meta name="apple-mobile-web-app-title" content="パパ力診断" />
   <title>パパ力診断</title>
 
+  <!-- OGP -->
+  <meta property="og:title" content="パパ力診断" />
+  <meta property="og:description" content="15問に答えてあなたのパパ力を診断！Lv.1〜10の10段階でランク判定。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://papa-shindan.github.io/app/" />
+  <meta property="og:image" content="https://papa-shindan.github.io/app/images/ogp.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="パパ力診断" />
+  <meta property="og:locale" content="ja_JP" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="パパ力診断" />
+  <meta name="twitter:description" content="15問に答えてあなたのパパ力を診断！Lv.1〜10の10段階でランク判定。" />
+  <meta name="twitter:image" content="https://papa-shindan.github.io/app/images/ogp.png" />
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-X9JEQ97CNE"></script>
   <script>
@@ -35,11 +51,11 @@
         <div class="stat-chip">📊 5項目評価</div>
         <div class="stat-chip">🏆 S〜Dランク</div>
       </div>
-      <!-- ========================================
-           【検証用】パターン選択UI
-           正式運用時はこのブロックを削除し、
-           下の通常スタートボタンのコメントアウトを外す
-      ======================================== -->
+      <button class="btn-start" onclick="startQuiz()">
+        診断スタート！
+        <span class="btn-arrow">→</span>
+      </button>
+      <!-- 【検証用】パターン選択UI（再検証時はこのコメントを外す）
       <div class="pattern-select-wrap">
         <p class="pattern-select-label">🔬 検証モード：パターンを選んでスタート</p>
         <div class="pattern-btn-row">
@@ -55,11 +71,6 @@
           </button>
         </div>
       </div>
-      <!-- 正式運用時はこちらを使用
-      <button class="btn-start" onclick="startQuiz()">
-        診断スタート！
-        <span class="btn-arrow">→</span>
-      </button>
       -->
       <p class="top-note">※ 所要時間：約2分</p>
     </div>
@@ -120,11 +131,13 @@
 
         <!-- 左：ランク -->
         <div class="result-left">
-          <p class="rank-eyebrow">総合ランク</p>
-          <div class="rank-badge" id="rank-badge">
-            <span class="rank-letter" id="rank-letter">S</span>
+          <div class="rank-illust-wrap" id="rank-illust-wrap">
+            <img id="rank-illust-img" class="rank-illust-img" src="" alt="ランクイラスト" />
+            <div class="rank-lv-overlay" id="rank-lv-overlay">
+              <span class="rank-lv-label">Lv.</span><span class="rank-letter" id="rank-letter">7</span>
+            </div>
           </div>
-          <p class="rank-name" id="rank-name">スーパーパパ</p>
+          <p class="rank-name" id="rank-name">💪 頼れるパパ</p>
         </div>
 
         <!-- 右：ステータス縦並び -->
@@ -170,11 +183,29 @@
         </div>
       </div>
 
-      <!-- ⑥ 再診断ボタン -->
+      <!-- ⑥ 回答確認ボタン -->
+      <button class="btn-answers" onclick="showAnswers()">
+        📋 回答を確認する
+      </button>
+
+      <!-- ⑦ 再診断ボタン -->
       <button class="btn-retry" onclick="retryQuiz()">
         🔄 もう一度診断する
       </button>
 
+    </div>
+  </div>
+
+  <!-- ==============================
+       画面④：回答確認画面
+  ============================== -->
+  <div id="screen-answers" class="screen">
+    <div class="answers-wrap">
+      <div class="answers-header">
+        <button class="btn-back" onclick="showScreen('screen-result')">← 結果に戻る</button>
+        <span class="quiz-num">回答確認</span>
+      </div>
+      <div id="answers-list"></div>
     </div>
   </div>
 
