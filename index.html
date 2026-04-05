@@ -43,18 +43,35 @@
   ============================== -->
   <div id="screen-top" class="screen active">
     <div class="top-wrap">
-      <div class="top-badge">🏅 Official</div>
-      <div class="top-icon">👨‍👧‍👦</div>
+
+      <!-- 【E】メインビジュアル（top_visual.png があれば表示、なければ絵文字） -->
+      <div class="top-visual-wrap">
+        <img id="top-visual" src="images/top_visual.png" alt="パパ力診断"
+          onerror="this.style.display='none';document.getElementById('top-icon-fallback').style.display='block';" />
+        <div id="top-icon-fallback" class="top-icon" style="display:none">👨‍👧‍👦</div>
+      </div>
+
+      <!-- タイトル -->
       <h1 class="top-title">パパ力<br>診断</h1>
-      <p class="top-sub">15問の質問に答えて<br>あなたのパパ力を測定しよう！</p>
+
+      <!-- サブコピー -->
+      <p class="top-subcopy">全10段階のLvで判定。あなたは何レベル？</p>
+
+      <!-- 説明文 -->
+      <p class="top-sub">15問・約2分で<br>あなたのパパ力を診断しよう！</p>
+
+      <!-- バッジ群 -->
       <div class="top-stats-row">
         <div class="stat-chip">📊 5項目評価</div>
-        <div class="stat-chip">🏆 S〜Dランク</div>
+        <div class="stat-chip">🎮 Lv.1〜10 レベル判定</div>
       </div>
+
+      <!-- CTAボタン -->
       <button class="btn-start" onclick="startQuiz()">
         診断スタート！
         <span class="btn-arrow">→</span>
       </button>
+
       <!-- 【検証用】パターン選択UI（再検証時はこのコメントを外す）
       <div class="pattern-select-wrap">
         <p class="pattern-select-label">🔬 検証モード：パターンを選んでスタート</p>
@@ -72,7 +89,7 @@
         </div>
       </div>
       -->
-      <p class="top-note">※ 所要時間：約2分</p>
+
     </div>
   </div>
 
