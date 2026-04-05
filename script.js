@@ -215,16 +215,16 @@ const STATUS_CONFIG_B = {
 };
 
 const RANKS_B = [
-  { rank: "10", lv: 10, cssClass: "rank-lv10", name: "👑 伝説のパパ神",      tagline: "もはや人間じゃない",          minScore: 92 },
-  { rank: "9",  lv: 9,  cssClass: "rank-lv9",  name: "🌟 レジェンドパパ",    tagline: "家族の誰より頼られてる",       minScore: 82 },
-  { rank: "8",  lv: 8,  cssClass: "rank-lv8",  name: "🦸 スーパーパパ",      tagline: "妻の株爆上がり確定",           minScore: 71 },
-  { rank: "7",  lv: 7,  cssClass: "rank-lv7",  name: "💪 頼れるパパ",        tagline: "言えばちゃんとやる",           minScore: 61 },
-  { rank: "6",  lv: 6,  cssClass: "rank-lv6",  name: "🌱 育ちざかりパパ",    tagline: "伸びしろしかない",             minScore: 51 },
-  { rank: "5",  lv: 5,  cssClass: "rank-lv5",  name: "😅 そこそこパパ",      tagline: "平均点は超えてる…たぶん",      minScore: 41 },
-  { rank: "4",  lv: 4,  cssClass: "rank-lv4",  name: "🛋️ ソファの主",        tagline: "休日の定位置、知ってる",        minScore: 31 },
-  { rank: "3",  lv: 3,  cssClass: "rank-lv3",  name: "😴 いるだけパパ",      tagline: "存在は確認されている",         minScore: 20 },
-  { rank: "2",  lv: 2,  cssClass: "rank-lv2",  name: "🌙 パパ覚醒待ち",      tagline: "まだ眠っている才能がある（はず）", minScore: 10 },
-  { rank: "1",  lv: 1,  cssClass: "rank-lv1",  name: "🥚 パパの卵",          tagline: "ここから始まる物語",           minScore: 0  },
+  { rank: "10", lv: 10, cssClass: "rank-lv10", name: "👑 伝説のパパ神",    tagline: "もはや人間じゃない",              minScore: 87 },
+  { rank: "9",  lv: 9,  cssClass: "rank-lv9",  name: "🌟 レジェンドパパ",  tagline: "家族の誰より頼られてる",           minScore: 74 },
+  { rank: "8",  lv: 8,  cssClass: "rank-lv8",  name: "🦸 スーパーパパ",    tagline: "妻の株爆上がり確定",               minScore: 61 },
+  { rank: "7",  lv: 7,  cssClass: "rank-lv7",  name: "💪 頼れるパパ",      tagline: "言えばちゃんとやる",               minScore: 50 },
+  { rank: "6",  lv: 6,  cssClass: "rank-lv6",  name: "🌱 育ちざかりパパ",  tagline: "伸びしろしかない",                 minScore: 40 },
+  { rank: "5",  lv: 5,  cssClass: "rank-lv5",  name: "😅 そこそこパパ",    tagline: "平均点は超えてる…たぶん",          minScore: 30 },
+  { rank: "4",  lv: 4,  cssClass: "rank-lv4",  name: "🌀 まだまだパパ",    tagline: "やれることはある、たぶん",          minScore: 21 },
+  { rank: "3",  lv: 3,  cssClass: "rank-lv3",  name: "😴 いるだけパパ",    tagline: "存在は確認されている",             minScore: 13 },
+  { rank: "2",  lv: 2,  cssClass: "rank-lv2",  name: "🌙 パパ覚醒待ち",    tagline: "まだ眠っている才能がある（はず）", minScore: 5  },
+  { rank: "1",  lv: 1,  cssClass: "rank-lv1",  name: "🥚 パパの卵",        tagline: "ここから始まる物語",               minScore: 0  },
 ];
 
 const QUESTIONS_B = [
@@ -400,16 +400,16 @@ const QUESTIONS_B = [
  * パターンA：最大104pt基準
  */
 const RANKS = [
-  { rank: "10", lv: 10, cssClass: "rank-lv10", name: "👑 伝説のパパ神",      tagline: "もはや人間じゃない",          minScore: 92 },
-  { rank: "9",  lv: 9,  cssClass: "rank-lv9",  name: "🌟 レジェンドパパ",    tagline: "家族の誰より頼られてる",       minScore: 82 },
-  { rank: "8",  lv: 8,  cssClass: "rank-lv8",  name: "🦸 スーパーパパ",      tagline: "妻の株爆上がり確定",           minScore: 71 },
-  { rank: "7",  lv: 7,  cssClass: "rank-lv7",  name: "💪 頼れるパパ",        tagline: "言えばちゃんとやる",           minScore: 61 },
-  { rank: "6",  lv: 6,  cssClass: "rank-lv6",  name: "🌱 育ちざかりパパ",    tagline: "伸びしろしかない",             minScore: 51 },
-  { rank: "5",  lv: 5,  cssClass: "rank-lv5",  name: "😅 そこそこパパ",      tagline: "平均点は超えてる…たぶん",      minScore: 41 },
-  { rank: "4",  lv: 4,  cssClass: "rank-lv4",  name: "🛋️ ソファの主",        tagline: "休日の定位置、知ってる",        minScore: 31 },
-  { rank: "3",  lv: 3,  cssClass: "rank-lv3",  name: "😴 いるだけパパ",      tagline: "存在は確認されている",         minScore: 20 },
-  { rank: "2",  lv: 2,  cssClass: "rank-lv2",  name: "🌙 パパ覚醒待ち",      tagline: "まだ眠っている才能がある（はず）", minScore: 10 },
-  { rank: "1",  lv: 1,  cssClass: "rank-lv1",  name: "🥚 パパの卵",          tagline: "ここから始まる物語",           minScore: 0  },
+  { rank: "10", lv: 10, cssClass: "rank-lv10", name: "👑 伝説のパパ神",    tagline: "もはや人間じゃない",              minScore: 87 },
+  { rank: "9",  lv: 9,  cssClass: "rank-lv9",  name: "🌟 レジェンドパパ",  tagline: "家族の誰より頼られてる",           minScore: 74 },
+  { rank: "8",  lv: 8,  cssClass: "rank-lv8",  name: "🦸 スーパーパパ",    tagline: "妻の株爆上がり確定",               minScore: 61 },
+  { rank: "7",  lv: 7,  cssClass: "rank-lv7",  name: "💪 頼れるパパ",      tagline: "言えばちゃんとやる",               minScore: 50 },
+  { rank: "6",  lv: 6,  cssClass: "rank-lv6",  name: "🌱 育ちざかりパパ",  tagline: "伸びしろしかない",                 minScore: 40 },
+  { rank: "5",  lv: 5,  cssClass: "rank-lv5",  name: "😅 そこそこパパ",    tagline: "平均点は超えてる…たぶん",          minScore: 30 },
+  { rank: "4",  lv: 4,  cssClass: "rank-lv4",  name: "🌀 まだまだパパ",    tagline: "やれることはある、たぶん",          minScore: 21 },
+  { rank: "3",  lv: 3,  cssClass: "rank-lv3",  name: "😴 いるだけパパ",    tagline: "存在は確認されている",             minScore: 13 },
+  { rank: "2",  lv: 2,  cssClass: "rank-lv2",  name: "🌙 パパ覚醒待ち",    tagline: "まだ眠っている才能がある（はず）", minScore: 5  },
+  { rank: "1",  lv: 1,  cssClass: "rank-lv1",  name: "🥚 パパの卵",        tagline: "ここから始まる物語",               minScore: 0  },
 ];
 
 /**
@@ -548,39 +548,39 @@ const RANK_ILLUSTRATIONS = {
  */
 const SKILLS_POSITIVE = [
   // SSR（8個）
-  { rarity:"SSR", icon:"💪", name:"無限体力",           trigger:"stamina"   },
-  { rarity:"SSR", icon:"🔮", name:"先読み神",            trigger:"planning"  },
-  { rarity:"SSR", icon:"💞", name:"ママ完全理解",         trigger:"empathy"   },
-  { rarity:"SSR", icon:"🌙", name:"夜泣き完全対応",       trigger:"childcare" },
-  { rarity:"SSR", icon:"🧠", name:"感情翻訳機",           trigger:"empathy"   },
-  { rarity:"SSR", icon:"🎪", name:"全力遊び王",           trigger:"stamina"   },
-  { rarity:"SSR", icon:"⚖️", name:"家庭バランサー",       trigger:"planning"  },
-  { rarity:"SSR", icon:"⏱️", name:"時間創造者",           trigger:"planning"  },
+  { rarity:"SSR", icon:"💪", name:"無限体力",           trigger:"asobi"   },
+  { rarity:"SSR", icon:"🔮", name:"先読み神",            trigger:"growth"  },
+  { rarity:"SSR", icon:"💞", name:"ママ完全理解",         trigger:"kizuna"  },
+  { rarity:"SSR", icon:"🌙", name:"夜泣き完全対応",       trigger:"care"    },
+  { rarity:"SSR", icon:"🧠", name:"感情翻訳機",           trigger:"kizuna"  },
+  { rarity:"SSR", icon:"🎪", name:"全力遊び王",           trigger:"asobi"   },
+  { rarity:"SSR", icon:"⚖️", name:"家庭バランサー",       trigger:"team"    },
+  { rarity:"SSR", icon:"⏱️", name:"時間創造者",           trigger:"growth"  },
   // SR（9個）
-  { rarity:"SR",  icon:"😴", name:"寝かしつけ職人",       trigger:"childcare" },
-  { rarity:"SR",  icon:"🏃", name:"公園マスター",          trigger:"stamina"   },
-  { rarity:"SR",  icon:"🔄", name:"切り替え上手",          trigger:"empathy"   },
-  { rarity:"SR",  icon:"💬", name:"共感マスター",           trigger:"empathy"   },
-  { rarity:"SR",  icon:"📋", name:"段取り神",              trigger:"planning"  },
-  { rarity:"SR",  icon:"🎨", name:"遊びクリエイター",       trigger:"childcare" },
-  { rarity:"SR",  icon:"🧘", name:"忍耐の達人",            trigger:"stamina"   },
-  { rarity:"SR",  icon:"🧹", name:"片付け誘導士",           trigger:"housework" },
-  { rarity:"SR",  icon:"🚗", name:"外出スムーズ",           trigger:"planning"  },
+  { rarity:"SR",  icon:"😴", name:"寝かしつけ職人",       trigger:"care"    },
+  { rarity:"SR",  icon:"🏃", name:"公園マスター",          trigger:"asobi"   },
+  { rarity:"SR",  icon:"🔄", name:"切り替え上手",          trigger:"kizuna"  },
+  { rarity:"SR",  icon:"💬", name:"共感マスター",           trigger:"kizuna"  },
+  { rarity:"SR",  icon:"📋", name:"段取り神",              trigger:"team"    },
+  { rarity:"SR",  icon:"🎨", name:"遊びクリエイター",       trigger:"asobi"   },
+  { rarity:"SR",  icon:"🧘", name:"忍耐の達人",            trigger:"care"    },
+  { rarity:"SR",  icon:"🧹", name:"片付け誘導士",           trigger:"team"    },
+  { rarity:"SR",  icon:"🚗", name:"外出スムーズ",           trigger:"team"    },
   // R（8個）
-  { rarity:"R",   icon:"📖", name:"絵本読み名人",           trigger:"childcare" },
-  { rarity:"R",   icon:"🤗", name:"抱っこエース",            trigger:"childcare" },
-  { rarity:"R",   icon:"🌅", name:"朝支度スムーズ",          trigger:"housework" },
-  { rarity:"R",   icon:"🍽️", name:"ごはんサポーター",        trigger:"housework" },
-  { rarity:"R",   icon:"🛁", name:"お風呂リーダー",           trigger:"childcare" },
-  { rarity:"R",   icon:"👕", name:"お着替え誘導",             trigger:"childcare" },
-  { rarity:"R",   icon:"😤", name:"ぐずり耐性",              trigger:"stamina"   },
-  { rarity:"R",   icon:"🍬", name:"おやつコントロール",        trigger:"planning"  },
+  { rarity:"R",   icon:"📖", name:"絵本読み名人",           trigger:"kizuna"  },
+  { rarity:"R",   icon:"🤗", name:"抱っこエース",            trigger:"care"    },
+  { rarity:"R",   icon:"🌅", name:"朝支度スムーズ",          trigger:"team"    },
+  { rarity:"R",   icon:"🍽️", name:"ごはんサポーター",        trigger:"team"    },
+  { rarity:"R",   icon:"🛁", name:"お風呂リーダー",           trigger:"care"    },
+  { rarity:"R",   icon:"👕", name:"お着替え誘導",             trigger:"care"    },
+  { rarity:"R",   icon:"😤", name:"ぐずり耐性",              trigger:"asobi"   },
+  { rarity:"R",   icon:"🍬", name:"おやつコントロール",        trigger:"growth"  },
   // N（5個）
-  { rarity:"N",   icon:"👀", name:"見守り安定",              trigger:"stamina"   },
-  { rarity:"N",   icon:"🗣️", name:"声かけ丁寧",              trigger:"empathy"   },
-  { rarity:"N",   icon:"🐢", name:"マイペース対応",           trigger:"stamina"   },
-  { rarity:"N",   icon:"🛡️", name:"安全第一",                trigger:"childcare" },
-  { rarity:"N",   icon:"🙂", name:"ほどほど参加",             trigger:"stamina"   },
+  { rarity:"N",   icon:"👀", name:"見守り安定",              trigger:"asobi"   },
+  { rarity:"N",   icon:"🗣️", name:"声かけ丁寧",              trigger:"kizuna"  },
+  { rarity:"N",   icon:"🐢", name:"マイペース対応",           trigger:"care"    },
+  { rarity:"N",   icon:"🛡️", name:"安全第一",                trigger:"care"    },
+  { rarity:"N",   icon:"🙂", name:"ほどほど参加",             trigger:"growth"  },
 ];
 
 const SKILLS_NEGATIVE = [
@@ -621,14 +621,13 @@ const SKILLS_NEGATIVE = [
  * @param {number} total    総合スコア
  * @returns {Array}         最大3個のskillオブジェクト（type付き）
  */
-function pickSkills(scores, total, activeRanks) {
-  activeRanks = activeRanks || RANKS;
+function pickSkills(scores, total) {
   const result = [];
   const pick   = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   // ── ポジティブ3個を選出 ──
   // Lvに応じてレアリティプールを決定
-  const lv = (activeRanks || RANKS).find(r => total >= r.minScore)?.lv || 1;
+  const lv = RANKS_B.find(r => total >= r.minScore)?.lv || 1;
   let rarityPool;
   if      (lv >= 9) rarityPool = ["SSR","SSR","SR"];  // Lv9〜10
   else if (lv >= 7) rarityPool = ["SSR","SR","SR"];   // Lv7〜8
@@ -671,7 +670,7 @@ const COMMENTS = {
   "7":  { wife: [ "言えばやってくれる。言わないとやらない。", "頼れる。でも自発的じゃない。", "声かけ必須だけど、動いてくれるのは助かる。" ] },
   "6":  { wife: [ "伸びしろを感じる。育てがいがある。", "やる気はある。あとは行動だけ。", "もう少しで頼れるパパになれそう。" ] },
   "5":  { wife: [ "戦力にはなる。安定はしない。", "やる気はある。でも空回りしがち。", "平均点は超えてる…たぶん。" ] },
-  "4":  { wife: [ "ソファとの絆が深すぎる。", "休日の存在感が薄い。", "いるのにいない感じがする。" ] },
+  "4":  { wife: [ "やれることはある。でもやってない。", "動けばできる人なのは知ってる。", "伸びしろはある。使ってないだけ。" ] },
   "3":  { wife: [ "存在感は薄め。でもいないと困る。", "家族というより、同居人に近い。", "子どもより自由に生きてる。" ] },
   "2":  { wife: [ "まず、気づくところから始めよう。", "才能はあると信じてる。たぶん。", "眠れる獅子、早く目覚めて。" ] },
   "1":  { wife: [ "ここから始まる物語に期待してる。", "いるだけでいい…とは言えない段階。", "これ、診断じゃなくて現実だよ。" ] },
@@ -705,20 +704,13 @@ function showScreen(id) {
 // ============================================
 
 function startQuiz(pattern) {
-  // パターンB固定
-  // 【再検証時】この行をコメントアウトし、下の検証用コードを有効にする
   currentPattern   = 'B';
   currentQuestions = QUESTIONS_B;
-
-  // 【検証用】パターン切り替え（再検証時はこのブロックのコメントを外す）
-  // currentPattern   = pattern || 'B';
-  // currentQuestions = (currentPattern === 'B') ? QUESTIONS_B : QUESTIONS_A;
 
   currentQuestion = 0;
   answerHistory = [];
   scores = {};
-  const config = (currentPattern === 'B') ? STATUS_CONFIG_B : STATUS_CONFIG;
-  Object.keys(config).forEach(key => { scores[key] = 0; });
+  Object.keys(STATUS_CONFIG_B).forEach(key => { scores[key] = 0; });
   showScreen("screen-quiz");
   renderQuestion();
 }
@@ -818,9 +810,9 @@ function goBack() {
  * 結果画面を組み立てて表示する
  */
 function showResult() {
-  // ── パターンに応じた設定を選択 ──────
-  const activeStatusConfig = (currentPattern === 'B') ? STATUS_CONFIG_B : STATUS_CONFIG;
-  const activeRanks        = (currentPattern === 'B') ? RANKS_B : RANKS;
+  // パターンB固定
+  const activeStatusConfig = STATUS_CONFIG_B;
+  const activeRanks        = RANKS_B;
 
   // ── 総合スコア計算 ──────────────────
   const totalScore = Object.values(scores).reduce((sum, v) => sum + v, 0);
@@ -865,9 +857,7 @@ function showResult() {
   statusList.innerHTML = "";
 
   // ── ステータス最大値定義（パーセンテージ判定用） ──
-  const STATUS_MAX_A = { childcare:34, stamina:10, housework:14, empathy:22, planning:24 };
   const STATUS_MAX_B = { care:15, kizuna:24, team:18, asobi:18, growth:15 };
-  const activeStatusMax = (currentPattern === 'B') ? STATUS_MAX_B : STATUS_MAX_A;
 
   // スコア → ランク変換（パーセンテージ方式）
   // S: 80%以上 / A: 60%以上 / B: 35%以上 / C: 15%以上 / D: 15%未満
@@ -882,7 +872,7 @@ function showResult() {
 
   Object.entries(activeStatusConfig).forEach(([key, config]) => {
     const val      = scores[key] || 0;
-    const maxVal   = activeStatusMax[key] || 1;
+    const maxVal   = STATUS_MAX_B[key] || 1;
     const rankInfo = scoreToRank(val, maxVal);
 
     const item = document.createElement("div");
@@ -901,7 +891,7 @@ function showResult() {
   const skillsList = document.getElementById("skills-list");
   skillsList.innerHTML = "";
 
-  const selectedSkills = pickSkills(scores, totalScore, activeRanks);
+  const selectedSkills = pickSkills(scores, totalScore);
 
   // レアリティ表示テキスト
   const rarityLabel = { SSR:"👑 SSR", SR:"🌟 SR", R:"✨ R", N:"🙂 N" };
