@@ -614,49 +614,281 @@ const SKILLS_NEGATIVE = [
 ];
 
 /**
- * 特殊能力選出ロジック
- * - 総合スコアに応じてポジティブのレアリティを制御
- * - 下位ステータスが低い場合、ネガティブを最大1個混入
- * @param {Object} scores   各ステータスのptオブジェクト
- * @param {number} total    総合スコア
- * @returns {Array}         最大3個のskillオブジェクト（type付き）
+ * 特殊能力選出ロジック（条件ベース）
+ * - 回答履歴・ステータスランクをもとに出現条件を判定
+ * - Lvによってポジティブ個数・ネガティブ有無を制御
  */
 function pickSkills(scores, total) {
-  const result = [];
-  const pick   = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-  // ── ポジティブ3個を選出 ──
-  // Lvに応じてレアリティプールを決定
+  // ── Lv・ステータスランク算出 ──
   const lv = RANKS_B.find(r => total >= r.minScore)?.lv || 1;
-  let rarityPool;
-  if      (lv >= 9) rarityPool = ["SSR","SSR","SR"];  // Lv9〜10
-  else if (lv >= 7) rarityPool = ["SSR","SR","SR"];   // Lv7〜8
-  else if (lv >= 5) rarityPool = ["SR","SR","R"];     // Lv5〜6
-  else if (lv >= 3) rarityPool = ["R","R","N"];       // Lv3〜4
-  else              rarityPool = ["N","N","N"];        // Lv1〜2
+  const STATUS_MAX = { care:15, kizuna:24, team:18, asobi:18, growth:15 };
 
-  // 上位3ステータスを特定
-  const topKeys = Object.entries(scores)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 3)
-    .map(([key]) => key);
-
-  topKeys.forEach((key, i) => {
-    const rarity    = rarityPool[i];
-    // trigger一致＆レアリティ一致を優先、なければレアリティのみで選出
-    const preferred = SKILLS_POSITIVE.filter(s => s.rarity === rarity && s.trigger === key);
-    const fallback  = SKILLS_POSITIVE.filter(s => s.rarity === rarity);
-    const pool      = preferred.length > 0 ? preferred : fallback;
-    result.push({ ...pick(pool), type: "positive" });
-  });
-
-  // ── ネガティブ判定：最下位ステータスのptが3未満なら1個追加 ──
-  const minPt = Math.min(...Object.values(scores));
-  if (minPt <= 2) {
-    result.push({ ...pick(SKILLS_NEGATIVE), type: "negative" });
+  function statusRank(key) {
+    const pct = (scores[key] || 0) / STATUS_MAX[key];
+    if (pct >= 0.80) return 5; // S
+    if (pct >= 0.60) return 4; // A
+    if (pct >= 0.35) return 3; // B
+    if (pct >= 0.15) return 2; // C
+    return 1;                  // D
   }
 
-  return result;
+  const sr = {
+    care:   statusRank("care"),
+    kizuna: statusRank("kizuna"),
+    team:   statusRank("team"),
+    asobi:  statusRank("asobi"),
+    growth: statusRank("growth"),
+  };
+
+  // 回答インデックス取得（0=A, 1=B, 2=C, 3=D）
+  // answerHistory[i].index = 問i+1の回答
+  const ans = (q) => answerHistory[q - 1]?.index ?? 99;
+
+  // ── ポジティブ候補を条件判定で収集 ──
+  const positives = [];
+
+  // ── SSR ──
+  // 💪 無限体力 (あそび力S)
+  if (sr.asobi >= 5 && ans(11) === 0 && ans(11) !== 3)
+    positives.push({ rarity:"SSR", icon:"💪", name:"無限体力",     priority: ans(4) <= 1 ? 2 : 1 });
+
+  // 🎪 全力遊び王 (あそび力S)
+  if (sr.asobi >= 5 && ans(4) === 0 && ans(4) !== 3 && ans(11) !== 3)
+    positives.push({ rarity:"SSR", icon:"🎪", name:"全力遊び王",   priority: (ans(4) === 2 || ans(12) === 0) ? 3 : 1 });
+
+  // 💞 ママ完全理解 (きずな力S)
+  if (sr.kizuna >= 5 && ans(8) === 0 && ans(8) !== 3 && ans(5) !== 3)
+    positives.push({ rarity:"SSR", icon:"💞", name:"ママ完全理解", priority: ans(8) === 0 ? 3 : 1 });
+
+  // 🧠 感情翻訳機 (きずな力S)
+  if (sr.kizuna >= 5 && ans(5) === 0 && ans(5) !== 3 && ans(6) !== 3)
+    positives.push({ rarity:"SSR", icon:"🧠", name:"感情翻訳機",   priority: ans(5) === 0 ? 2 : 1 });
+
+  // 🌙 泣き止ませの達人 (ケア力S)
+  if (sr.care >= 5 && ans(1) === 0 && ans(1) !== 3 && ans(2) !== 3)
+    positives.push({ rarity:"SSR", icon:"🌙", name:"泣き止ませの達人", priority: 2 });
+
+  // ⚖️ 家庭バランサー (チーム力S)
+  if (sr.team >= 5 && ans(7) === 0 && ans(7) !== 3 && ans(8) !== 3)
+    positives.push({ rarity:"SSR", icon:"⚖️", name:"家庭バランサー", priority: 2 });
+
+  // 🔮 先読み神 (パパ成長力S)
+  if (sr.growth >= 5 && ans(13) === 0 && ans(13) !== 3 && ans(12) !== 3)
+    positives.push({ rarity:"SSR", icon:"🔮", name:"先読み神",     priority: ans(13) === 0 ? 3 : 1 });
+
+  // ⏱️ 時間創造者 (パパ成長力S)
+  if (sr.growth >= 5 && ans(6) === 0 && ans(6) !== 3 && ans(13) !== 3)
+    positives.push({ rarity:"SSR", icon:"⏱️", name:"時間創造者",   priority: ans(6) === 0 ? 2 : 1 });
+
+  // ── SR ──
+  // 😴 寝かしつけ職人 (ケア力A)
+  if (sr.care >= 4 && ans(2) <= 1 && ans(2) !== 3)
+    positives.push({ rarity:"SR", icon:"😴", name:"寝かしつけ職人", priority: ans(2) <= 1 ? 3 : 1 });
+
+  // 🧘 忍耐の達人 (ケア力A)
+  if (sr.care >= 4 && ans(1) <= 1 && ans(1) !== 3 && ans(5) !== 3)
+    positives.push({ rarity:"SR", icon:"🧘", name:"忍耐の達人",    priority: 1 });
+
+  // 🏃 公園マスター (あそび力A)
+  if (sr.asobi >= 4 && ans(11) <= 1 && ans(11) !== 3)
+    positives.push({ rarity:"SR", icon:"🏃", name:"公園マスター",  priority: ans(11) <= 1 ? 3 : 1 });
+
+  // 🎨 遊びクリエイター (あそび力A)
+  if (sr.asobi >= 4 && ans(12) === 0 && ans(12) !== 3 && ans(4) !== 3)
+    positives.push({ rarity:"SR", icon:"🎨", name:"遊びクリエイター", priority: 2 });
+
+  // 💫 切り替え上手 (きずな力A)
+  if (sr.kizuna >= 4 && ans(5) <= 1 && ans(5) !== 3)
+    positives.push({ rarity:"SR", icon:"🔄", name:"切り替え上手",  priority: ans(5) === 0 ? 3 : 1 });
+
+  // 💬 共感マスター (きずな力A)
+  if (sr.kizuna >= 4 && ans(4) === 0 && ans(4) !== 3 && ans(5) !== 3)
+    positives.push({ rarity:"SR", icon:"💬", name:"共感マスター",  priority: 2 });
+
+  // 📋 段取り神 (チーム力A)
+  if (sr.team >= 4 && ans(9) === 0 && ans(9) !== 3 && ans(7) !== 3)
+    positives.push({ rarity:"SR", icon:"📋", name:"段取り神",      priority: 3 });
+
+  // 🧹 片付け誘導士 (チーム力A)
+  if (sr.team >= 4 && ans(7) <= 1 && ans(7) !== 3)
+    positives.push({ rarity:"SR", icon:"🧹", name:"片付け誘導士",  priority: 2 });
+
+  // 🚗 外出スムーズ (チーム力A)
+  if (sr.team >= 4 && ans(8) <= 1 && ans(8) !== 3 && ans(7) !== 3)
+    positives.push({ rarity:"SR", icon:"🚗", name:"外出スムーズ",  priority: 1 });
+
+  // ── R ──
+  // 📖 絵本読み名人 (きずな力B)
+  if (sr.kizuna >= 3 && ans(6) <= 1 && ans(6) !== 3 && ans(14) !== 3)
+    positives.push({ rarity:"R", icon:"📖", name:"絵本読み名人",   priority: 2 });
+
+  // 🤗 抱っこエース (ケア力B)
+  if (sr.care >= 3 && ans(5) === 1 && ans(5) !== 3 && ans(1) !== 3)
+    positives.push({ rarity:"R", icon:"🤗", name:"抱っこエース",   priority: 3 });
+
+  // 🛁 お風呂リーダー (ケア力B)
+  if (sr.care >= 3 && ans(2) <= 1 && ans(2) !== 3)
+    positives.push({ rarity:"R", icon:"🛁", name:"お風呂リーダー", priority: 2 });
+
+  // 👕 お着替え誘導 (ケア力B)
+  if (sr.care >= 3 && ans(2) >= 1 && ans(2) <= 2 && ans(2) !== 3)
+    positives.push({ rarity:"R", icon:"👕", name:"お着替え誘導",   priority: 1 });
+
+  // 🌅 朝支度スムーズ (チーム力B)
+  if (sr.team >= 3 && ans(9) === 1 && ans(9) !== 3 && ans(7) !== 3)
+    positives.push({ rarity:"R", icon:"🌅", name:"朝支度スムーズ", priority: 2 });
+
+  // 🍽️ ごはんサポーター (チーム力B)
+  if (sr.team >= 3 && ans(8) === 2 && ans(8) !== 3 && ans(7) !== 3)
+    positives.push({ rarity:"R", icon:"🍽️", name:"ごはんサポーター", priority: 1 });
+
+  // 😤 ぐずり耐性 (あそび力B)
+  if (sr.asobi >= 3 && ans(1) >= 1 && ans(1) <= 2 && ans(1) !== 3 && ans(4) !== 3)
+    positives.push({ rarity:"R", icon:"😤", name:"ぐずり耐性",     priority: 2 });
+
+  // 🍬 おやつコントロール (パパ成長力B)
+  if (sr.growth >= 3 && ans(13) === 1 && ans(13) !== 3)
+    positives.push({ rarity:"R", icon:"🍬", name:"おやつコントロール", priority: 2 });
+
+  // ── N ──
+  // 👀 見守り安定 (あそび力C)
+  if (sr.asobi >= 2 && ans(11) === 2 && ans(11) !== 3)
+    positives.push({ rarity:"N", icon:"👀", name:"見守り安定",     priority: 2 });
+
+  // 🗣️ 声かけ丁寧 (きずな力C)
+  if (sr.kizuna >= 2 && ans(5) === 2 && ans(5) !== 3)
+    positives.push({ rarity:"N", icon:"🗣️", name:"声かけ丁寧",     priority: 2 });
+
+  // 🐢 マイペース対応 (ケア力C)
+  if (sr.care >= 2 && ans(3) === 2 && !(ans(1) === 3 && ans(2) === 3 && ans(3) === 3))
+    positives.push({ rarity:"N", icon:"🐢", name:"マイペース対応", priority: 2 });
+
+  // 🛡️ 安全第一 (ケア力C)
+  if (sr.care >= 2 && ans(1) === 2 && ans(1) !== 3 && ans(2) !== 3)
+    positives.push({ rarity:"N", icon:"🛡️", name:"安全第一",       priority: 1 });
+
+  // 🙂 ほどほど参加 (パパ成長力C)
+  if (sr.growth >= 2 && ans(13) === 2 && ans(13) !== 3)
+    positives.push({ rarity:"N", icon:"🙂", name:"ほどほど参加",   priority: 2 });
+
+  // ── ポジティブ個数をLvで決定 ──
+  const posCount = lv >= 7 ? 3 : lv >= 4 ? 2 : 1;
+
+  // priorityの高い順に並べ、同priority内はランダム
+  positives.sort((a, b) => b.priority - a.priority || Math.random() - 0.5);
+
+  // 同じnameの重複を排除して上位posCount個を選出
+  const selectedPositives = [];
+  const usedNames = new Set();
+  for (const s of positives) {
+    if (!usedNames.has(s.name)) {
+      usedNames.add(s.name);
+      selectedPositives.push({ ...s, type: "positive" });
+    }
+    if (selectedPositives.length >= posCount) break;
+  }
+
+  // 候補が足りない場合はレアリティプールからフォールバック
+  if (selectedPositives.length < posCount) {
+    let rarityPool;
+    if      (lv >= 9) rarityPool = ["SSR","SSR","SR"];
+    else if (lv >= 7) rarityPool = ["SSR","SR","SR"];
+    else if (lv >= 5) rarityPool = ["SR","SR","R"];
+    else if (lv >= 3) rarityPool = ["R","R","N"];
+    else              rarityPool = ["N","N","N"];
+
+    while (selectedPositives.length < posCount) {
+      const rarity = rarityPool[selectedPositives.length] || "N";
+      const pool = SKILLS_POSITIVE.filter(s => s.rarity === rarity && !usedNames.has(s.name));
+      if (pool.length === 0) break;
+      const s = pick(pool);
+      usedNames.add(s.name);
+      selectedPositives.push({ ...s, type: "positive" });
+    }
+  }
+
+  // ── ネガティブ候補を条件判定で収集 ──
+  const negatives = [];
+
+  // Lv7以上はネガティブなし（Q8D特例除く）
+  const negAllowed = lv <= 6;
+  const negSpecial = ans(8) === 3 && lv >= 5; // なぜか怒られる特例
+
+  if (negAllowed || negSpecial) {
+
+    // 軽め
+    if (sr.team <= 2 && ans(7) === 2)
+      negatives.push({ icon:"😅", name:"指示待ちパパ",       weight:1 });
+    if (sr.kizuna <= 2 && (ans(6) === 2 || ans(6) === 3))
+      negatives.push({ icon:"📱", name:"とりあえずスマホ",    weight:1 });
+    if (sr.asobi <= 2 && ans(11) === 2)
+      negatives.push({ icon:"⏰", name:"5分だけの人",         weight:1 });
+    if (sr.team <= 2 && (ans(8) === 2 || ans(8) === 3))
+      negatives.push({ icon:"😶", name:"気づかない系男子",    weight:1 });
+    if (sr.team <= 2 && ans(7) === 2 && ans(8) === 2)
+      negatives.push({ icon:"💬", name:"今やろうと思ってた",  weight:1 });
+    if (sr.asobi <= 2 && ans(4) === 2)
+      negatives.push({ icon:"🚶", name:"途中離脱マン",        weight:1 });
+    if (sr.kizuna <= 2 && ans(5) === 2)
+      negatives.push({ icon:"↩️", name:"なぜか逆効果",        weight:1 });
+    if (sr.growth <= 2 && ans(9) === 2)
+      negatives.push({ icon:"⏱️", name:"タイミング悪い職人",  weight:1 });
+
+    // 中くらい
+    if (sr.care <= 3 && ans(3) === 2)
+      negatives.push({ icon:"😂", name:"詰めが甘い王",        weight:2 });
+    if (sr.growth <= 3 && ans(13) === 2 && (ans(6) === 2 || ans(6) === 3))
+      negatives.push({ icon:"📊", name:"やる気ムラあり",      weight:2 });
+    if (sr.care <= 2 && ans(2) === 2 && (ans(1) === 2 || ans(1) === 3))
+      negatives.push({ icon:"😪", name:"すぐ疲れた言う",      weight:2 });
+    if (sr.growth <= 3 && (ans(13) === 1 || ans(13) === 2) && ans(15) === 2)
+      negatives.push({ icon:"🔥", name:"最初だけ本気",        weight:2 });
+    if (sr.team <= 2 && (ans(9) === 2 || ans(9) === 3) && ans(8) === 2)
+      negatives.push({ icon:"💨", name:"だいたい空回り",      weight:2 });
+    if (sr.kizuna <= 2 && ans(8) === 3)
+      negatives.push({ icon:"😓", name:"なぜか怒られる",      weight: negSpecial ? 3 : 2 });
+    if (sr.team <= 2 && ans(7) === 2 && ans(8) === 2 && ans(9) === 2)
+      negatives.push({ icon:"🤔", name:"手伝った気でいる",    weight:2 });
+    if (sr.care <= 3 && ans(2) === 2)
+      negatives.push({ icon:"✂️", name:"ちょい雑プレイ",      weight:2 });
+
+    // 強め
+    if (sr.care <= 1 && sr.team <= 1 && ans(1) === 3 && ans(2) === 3 && ans(7) === 3)
+      negatives.push({ icon:"📋", name:"存在がイベント",      weight:3 });
+    if (sr.team <= 1 && ans(7) === 3)
+      negatives.push({ icon:"💥", name:"触ると散らかる",      weight:3 });
+    if (sr.team <= 2 && ans(7) >= 2 && ans(8) >= 2 && ans(9) >= 2)
+      negatives.push({ icon:"🎮", name:"指示で動くタイプ",    weight:3 });
+    if (sr.care <= 1 && ans(1) === 3 && ans(2) === 3 && ans(3) === 3)
+      negatives.push({ icon:"🏃", name:"ワンオペ回避マン",    weight:3 });
+    if (sr.team <= 2 && sr.asobi <= 2 && sr.care <= 2)
+      negatives.push({ icon:"🤷", name:"役に立ちそうで立たない", weight:3 });
+    if (sr.growth <= 1 && ans(13) === 3 && ans(15) === 3)
+      negatives.push({ icon:"📈", name:"なぜか仕事増やす",    weight:3 });
+    if (sr.kizuna <= 1 && ans(5) === 3 && ans(14) === 3)
+      negatives.push({ icon:"💨", name:"空気クラッシャー",    weight:3 });
+  }
+
+  // ── ネガティブ個数をLvで決定（最大1個） ──
+  const negCount = lv >= 7 ? 0 : 1;
+  const selectedNeg = [];
+  if (negCount > 0 && negatives.length > 0) {
+    // weightの高い順 → 同weight内ランダム
+    negatives.sort((a, b) => b.weight - a.weight || Math.random() - 0.5);
+    // 「今やろうと思ってた」と「指示待ちパパ」の同時出現を防ぐ
+    const usedNegNames = new Set();
+    for (const n of negatives) {
+      if (!usedNegNames.has(n.name)) {
+        usedNegNames.add(n.name);
+        selectedNeg.push({ ...n, type: "negative" });
+        break;
+      }
+    }
+  }
+
+  return [...selectedPositives, ...selectedNeg];
 }
 
 
@@ -749,7 +981,7 @@ function renderQuestion() {
       <span class="choice-letter">${letters[index]}</span>
       <span>${choice.text}</span>
     `;
-    btn.addEventListener("click", () => selectChoice(btn, choice.scores, choice.text));
+    btn.addEventListener("click", () => selectChoice(btn, choice.scores, choice.text, index));
     choicesEl.appendChild(btn);
   });
 }
@@ -757,15 +989,15 @@ function renderQuestion() {
 /**
  * 選択肢をタップ → ハイライト0.25秒 → 次の問へ
  */
-function selectChoice(btn, selectedScores, choiceText) {
+function selectChoice(btn, selectedScores, choiceText, choiceIndex) {
   // 連打防止
   document.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
 
   // ハイライト演出
   btn.classList.add("choice-selected");
 
-  // 今回の回答をスタックに積む（戻るボタン・回答確認用）
-  answerHistory.push({ scores: selectedScores, text: choiceText });
+  // 今回の回答をスタックに積む（戻るボタン・回答確認・特殊能力判定用）
+  answerHistory.push({ scores: selectedScores, text: choiceText, index: choiceIndex });
 
   // スコア加算
   Object.entries(selectedScores).forEach(([key, value]) => {
